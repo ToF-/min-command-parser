@@ -25,3 +25,13 @@ spec = do
             parseCommandIO args
             let (Success cmd) = parseCommand args
             cmd `shouldBe` Version
+
+        it "recognizes the reassign command without any flag" $ do
+            let args = words "reassign"
+            parseCommandIO args
+
+        it "recognizes the reassign command with a from flag" $ do
+            let args = words "reassign --from foobar"
+            parseCommandIO args
+            let (Success cmd) = parseCommand args
+            cmd `shouldBe` Reassign "foobar"
