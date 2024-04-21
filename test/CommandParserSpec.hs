@@ -35,3 +35,9 @@ spec = do
             parseCommandIO args
             let (Success cmd) = parseCommand args
             cmd `shouldBe` Reassign "foobar"
+
+        it "recognizes the transfer  command with a from flag and a to flag" $ do
+            let args = words "transfer --from foo --to bar"
+            parseCommandIO args
+            let (Success cmd) = parseCommand args
+            cmd `shouldBe` Transfer "foo" "bar"
