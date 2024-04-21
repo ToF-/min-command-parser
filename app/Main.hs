@@ -1,6 +1,9 @@
 module Main (main) where
 
-import Lib
+import Command
+import Options.Applicative as O
 
 main :: IO ()
-main = someFunc
+main = do
+    result <- customExecParser (prefs disambiguate) (info commandOptions idm)
+    print result
