@@ -3,11 +3,16 @@ module Command
     where
 
 import Options.Applicative as O
+
+data Currency = EUR | USD
+    deriving (Eq, Show)
+
 data Command 
     = Accounts
     | Version
     | Reassign { from :: String }
     | Transfer { origin :: String, dest :: String }
+    | Cash { curreny :: Currency }
     deriving (Eq, Show)
 
 commandOptions :: Parser Command
@@ -34,6 +39,12 @@ commandOptions = subparser
                             <> metavar "DESTINATION"
                             <> help "destination account")))
                 (progDesc "transfer from an account to another"))
+    <> O.command "cash"
+        (info (Cash <$>
+            (flag' EUR (long "EUR" <> short 'e')
+                <|> flag' USD (long "USD" <> short 'u')))
+              (progDesc "enter some cash in EUR or USD"))
+                 
     )
 
 

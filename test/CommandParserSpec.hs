@@ -41,3 +41,8 @@ spec = do
             parseCommandIO args
             let (Success cmd) = parseCommand args
             cmd `shouldBe` Transfer "foo" "bar"
+
+        it "recognizes the cash command with a eur flag or a usd flag" $ do
+            let args = words "cash --EUR"
+            let (Success cmd) = parseCommand args
+            cmd `shouldBe` Cash EUR
