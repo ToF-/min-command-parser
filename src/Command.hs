@@ -45,7 +45,7 @@ commandOptions = subparser
                 <|> flag' USD (long "USD" <> short 'u')))
               (progDesc "enter some cash in EUR or USD"))
                  
-    )
+    ) <**> simpleVersioner "v1.2.3"
 
 
 parseCommand :: [String] -> ParserResult Command
