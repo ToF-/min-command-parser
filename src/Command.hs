@@ -15,8 +15,9 @@ data Command
     | Version
     | Reassign { from :: String }
     | Transfer { origin :: String, dest :: String }
-    | Cash { curreny :: Currency }
+    | Cash { currency :: Currency }
     | Summary { month :: Month } 
+    | Detail {  detailCurrency :: Maybe Currency, account :: Maybe String }  
     deriving (Eq, Show)
 
 commandOptions :: Parser Command
@@ -53,6 +54,16 @@ commandOptions = subparser
                  <$> (option auto (long "year" <> short 'y' <> (metavar "YEAR")))
                  <*> (option auto (long "month" <> short 'm' <> (metavar "MONTH"))))
             (progDesc "enter a month period: year month"))
+    <> O.command "detail"
+        (info ((\c a -> Detail c (if a == "" then Nothing else Just a))
+               <$>
+                   (flag' (Just EUR) (long "EUR" <> short 'e')
+                    <|> flag' (Just USD) (long "USD" <> short 'u')
+                    <|> flag' Nothing (long "all-currencies"))
+                <*> (strOption (long "account" <> short 'a' <> metavar "ACCOUNT" <> value "" <> help "account name")))
+                (progDesc "give detail on an account for a currency"))
+               
+
 
                 
     ) <**> simpleVersioner "v1.2.3"

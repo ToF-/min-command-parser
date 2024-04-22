@@ -52,3 +52,8 @@ spec = do
             parseCommandIO args
             let (Success cmd) = parseCommand args
             cmd `shouldBe` Summary (Month 2024 04)
+
+        it "recognizes the detail command with maybe a currency and maybe an account" $ do
+            let args = words "detail --EUR -a MyAccount"
+            let (Success cmd) = parseCommand args
+            cmd `shouldBe` Detail (Just EUR) (Just "MyAccount")
