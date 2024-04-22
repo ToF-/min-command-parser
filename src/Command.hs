@@ -7,12 +7,16 @@ import Options.Applicative as O
 data Currency = EUR | USD
     deriving (Eq, Show)
 
+data Month = Month Int Int
+    deriving (Eq, Show)
+
 data Command 
     = Accounts
     | Version
     | Reassign { from :: String }
     | Transfer { origin :: String, dest :: String }
     | Cash { curreny :: Currency }
+    | Summary { month :: Month } 
     deriving (Eq, Show)
 
 commandOptions :: Parser Command
@@ -44,7 +48,13 @@ commandOptions = subparser
             (flag' EUR (long "EUR" <> short 'e')
                 <|> flag' USD (long "USD" <> short 'u')))
               (progDesc "enter some cash in EUR or USD"))
-                 
+    <> O.command "summary"
+        (info ((\y m -> Summary (Month y m)) 
+                 <$> (option auto (long "year" <> short 'y' <> (metavar "YEAR")))
+                 <*> (option auto (long "month" <> short 'm' <> (metavar "MONTH"))))
+            (progDesc "enter a month period: year month"))
+
+                
     ) <**> simpleVersioner "v1.2.3"
 
 

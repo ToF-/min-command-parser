@@ -46,3 +46,9 @@ spec = do
             let args = words "cash --EUR"
             let (Success cmd) = parseCommand args
             cmd `shouldBe` Cash EUR
+
+        it "recognizes the summary command with -m -y and a year and month" $ do
+            let args = words "summary -y 2024 -m 04"
+            parseCommandIO args
+            let (Success cmd) = parseCommand args
+            cmd `shouldBe` Summary (Month 2024 04)
